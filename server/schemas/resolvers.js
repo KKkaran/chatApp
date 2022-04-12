@@ -71,8 +71,9 @@ const resolvers = {
                 }
             })
         },
-       
-        
+        find_user:async(p,{username})=>{
+            return User.findOne({username})
+        }
         
     },
     Mutation:{
