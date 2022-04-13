@@ -43,3 +43,16 @@ export const User_Query = gql`
 
 
 }`
+export const ALL_USERS = gql`
+query{
+  users {
+  _id
+  username
+  email
+  channelModel {
+      _id
+    }
+  }
+}
+
+`
