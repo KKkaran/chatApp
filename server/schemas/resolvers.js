@@ -113,7 +113,7 @@ const resolvers = {
             const msgId = await Message.create({textValue:textValue,sender:senderId})
             console.log(msgId)
             //we can use the textvalue to update the channel
-            return Channel.findOneAndUpdate({_id},{$push:{messages:msgId}})
+            return Channel.findOneAndUpdate({_id},{$push:{messages:msgId}},{new:true})
                
               //return Channel.updateOne({_id},{$push:{messages:{}}})
           },

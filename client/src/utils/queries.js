@@ -60,5 +60,29 @@ query{
     }
   }
 }
+`
+export const Channel_Data = gql`
+query ($_id: ID!) {
+  channel(_id: $_id) {
+    _id
+    users {
+      _id
+    }
+    messages {
+      _id
+      textValue
+      sender {
+        username
+      }
+    }
+  }
+}
+`
 
+export const SEND_MESSAGE = gql`
+  mutation sendMessage($_id:ID, $textValue: String!, $senderId: Userss!) {
+    sendMessage(_id:$_id,textValue: $textValue, senderId: $senderId) {
+      _id
+    }
+  }
 `
