@@ -25,11 +25,17 @@ export const ADD_USER = gql`
 `;
 
 export const Me_Query = gql`
-query whoIsLoggedIn{
+query me{
   me {
     username
     email
-    password
+    channelModel {
+      _id
+      users {
+        _id
+        username
+      }
+    }
   }
 }
 `

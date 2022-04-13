@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from "./components/Main/Main"
 import { setContext } from '@apollo/client/link/context';
 import Dashboard from './components/Dashboard';
-
+import Channel from './components/Channel';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -44,6 +44,7 @@ function App() {
             <Route exact path="/login" component={Login}></Route>
             <Route exact path="/signup" component={Signup}></Route>
             <Route exact path="/profile/:username?" component={Dashboard}></Route>
+            <Route exact path="/channel/:channelId" component={Channel}></Route>
             <Route path="*" component={NoMatch} />
           </Switch>
           

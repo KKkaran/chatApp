@@ -25,7 +25,6 @@ const SearchedUsers = ()=>{
         name:""
     })
     useEffect(()=>{
-        console.log(searchData)
        const newList = usersData.filter(f=>{
            if(searchData.name !== ""){
                 if(f.username.includes(searchData.name)){
