@@ -40,14 +40,15 @@ query me{
 }
 `
 export const User_Query = gql`
-  query($username: String){
-
-    find_user(username: $username) {
-      email
-      username
+query($_id:ID){
+  find_user(_id:$_id) {
+    _id
+    email
+    username
+    channelModel{
+      _id
     }
-
-
+  }
 }`
 export const ALL_USERS = gql`
 query{
@@ -83,6 +84,23 @@ export const SEND_MESSAGE = gql`
   mutation sendMessage($_id:ID, $textValue: String!, $senderId: Userss!) {
     sendMessage(_id:$_id,textValue: $textValue, senderId: $senderId) {
       _id
+    }
+  }
+`
+
+export const CREATE_CHANNEL = gql`
+  mutation createChannel($users: [Userss]!){
+    createChannel(users: $users) {
+      _id
+      users {
+        username
+      }
+      messages {
+        textValue
+        sender {
+          username
+        }
+      }
     }
   }
 `

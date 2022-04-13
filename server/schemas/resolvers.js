@@ -71,8 +71,8 @@ const resolvers = {
                 }
             })
         },
-        find_user:async(p,{username})=>{
-            return User.findOne({username})
+        find_user:async(p,{_id})=>{
+            return User.findOne({_id})
         }
         
     },
@@ -106,7 +106,8 @@ const resolvers = {
                     $push:{channelModel : channelData}  
                 },{new:true})
             )) 
-            Promise.all(updatePromises).then(console.log).catch(console.error)
+             Promise.all(updatePromises).then(console.log).catch(console.error)
+             return channelData;
           },
           sendMessage: async(parent,{_id,textValue,senderId})=>{
               //we will first create a message get id and then grab the value from the message table

@@ -27,7 +27,6 @@ const Main = ()=>{
             }
          })
 
-         //console.log(channels)
      }
 
     
@@ -44,7 +43,7 @@ const Main = ()=>{
                 Auth.loggedIn() ? (
                     
                     <div>
-                        <SearchedUsers/>  
+                        <SearchedUsers meChannels={data.channelModel}></SearchedUsers>
                         <h3>Welcome {Auth.getProfile().data.username}</h3>
                         <h4>Recent Chats:</h4>  
                         {
