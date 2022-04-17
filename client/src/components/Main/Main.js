@@ -23,7 +23,8 @@ const Main = ()=>{
                         return false
                     }
                     return h.username
-                })
+                }),
+                msgs: c.messages
             }
          })
 
@@ -55,9 +56,12 @@ const Main = ()=>{
                                    <>
                                    {
                                        channels.map(c=> {
+                                           
                                            return <p>
 
-                                               <Link to={`/channel/${c.id}`} >{c.friend.map(v=>v.username)}</Link>
+                                               {c.msgs.length !== 0 ? (
+                                                   <Link to={`/channel/${c.id}`} >{c.friend.map(v=>v.username)}</Link>
+                                               ):("")}
                                                
                                                </p>
                                        })

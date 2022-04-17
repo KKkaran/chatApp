@@ -35,6 +35,9 @@ query me{
         _id
         username
       }
+      messages{
+        _id
+      }
     }
   }
 }
