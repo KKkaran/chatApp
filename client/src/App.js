@@ -12,6 +12,8 @@ import Home from "./components/Main/Main"
 import { setContext } from '@apollo/client/link/context';
 import Dashboard from './components/Dashboard';
 import Channel from './components/Channel';
+import { SocketProvider } from './components/SocketProvider';
+import Auth from './utils/Auth';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -37,6 +39,7 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
+      <SocketProvider id={Auth.getProfile().data._id}>
       <div className="flex-column justify-flex-start min-100-vh">
         <Router>
           <Switch>
@@ -51,6 +54,7 @@ function App() {
         </Router>
 
       </div>
+      </SocketProvider>
     </ApolloProvider>
   );
 }

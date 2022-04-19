@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { test } from '../../utils/queries'
 import Header from '../Header'
@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 const Main = ()=>{
-
+    
      const {loading, data:data2} = useQuery(Me_Query)
      const data = data2?.me || ""
      let channels;
@@ -34,7 +34,6 @@ const Main = ()=>{
     return(
         
         <>
-        
         <Header/>
         <div className='container'>
         
@@ -60,7 +59,9 @@ const Main = ()=>{
                                            return <p>
 
                                                {c.msgs.length !== 0 ? (
-                                                   <Link to={`/channel/${c.id}`} >{c.friend.map(v=>v.username)}</Link>
+                                                   <p>
+                                                       <Link to={`/channel/${c.id}`} >{c.friend.map(v=>v.username)}</Link>
+                                                   </p>
                                                ):("")}
                                                
                                                </p>
@@ -73,6 +74,9 @@ const Main = ()=>{
                            }
                         </div>
                         
+                        <h2>
+                           
+                        </h2>
                     </div>
                     
                 ):(

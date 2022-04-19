@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-
 // import ApolloServer
 const { ApolloServer } = require('apollo-server-express');
 const {authMiddleware} = require("./utils/auth")
@@ -10,6 +9,16 @@ const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server,{
+  cors:{
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST']
+  }
+});
 
 const startServer = async () => {
   // create a new Apollo server and pass in our schema data
@@ -42,9 +51,25 @@ if (process.env.NODE_ENV === 'production') {
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 // });
+io.on('connection', (socket) => {
+  console.log('a user connected');
 
-db.once('open', () => {
-  app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
+  const id = socket.handshake.query.id;//id will be the logged in user id passed from client
+  socket.join(id)
+  
+  socket.on('chat message', ({msg, id}) => {
+    console.log('message from client: ' + msg.text + " " + id);
+    
+    socket.emit("rec",{msg})
   });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+db.once('open', () => {
+  server.listen(PORT, () => {
+    console.log(`Socket running on server`);
+  });
+
 });

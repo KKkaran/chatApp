@@ -1,13 +1,14 @@
 import { useMutation, useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Header"
 import { Channel_Data,SEND_MESSAGE } from "../../utils/queries";
 import { useParams } from "react-router-dom";
 import Auth from "../../utils/Auth";
-
-
+import { SocketProvider } from "../SocketProvider";
+import { useSocket } from "../SocketProvider";
 const Channel = ()=>{
 
+    
     //useMutation to send message later
     const [sendMessageNow,{error:error2}] = useMutation(SEND_MESSAGE)
     //getting the channel id using useParams hook
@@ -21,24 +22,48 @@ const Channel = ()=>{
     const [msg,setMsg] = useState({
         text:""
     })
+    const id = Auth.getProfile().data._id
+    let socket = useSocket();
+    useEffect(()=>{
+        if(socket == null) {
+            console.log("socket null")
+            return
+        }
+
+        console.log("socket full")
+        socket.on('rec',({msg})=>
+            console.log("message from server socket id: " + msg)
+        )
+    
+        //return ()=> socket.off('rec-msg')
+    },[socket])
     //calling the SendMessage when send button clicked
     const sendMessage = async(e)=>{
         e.preventDefault()
         setMsg({...msg,text:""})
-        document.querySelector('#msginput').focus();
+        
+        
+        socket.emit("chat message",{msg,id})
+
+       
+        document.querySelector('#msginput').focus(); 
         
         //sending message to the backend!!
         try {
             const { data: data3 } = await sendMessageNow({
               variables: {_id:channelId.channelId,textValue:msg.text,senderId: {_id:Auth.getProfile().data._id}}
             });
-
+            //socket.emit('chat message', msg.text);
             console.log(data3)
+            // socket.on('rec-msg',({msg})=>{
+            //     console.log(msg.text + "dddddddddddddddddddddddddddddddddddd")
+            // })
           } catch (e) {
             console.error(e);
           }
     }
 
+    
     return(
 
         <>
@@ -48,10 +73,10 @@ const Channel = ()=>{
                     <h4>loading...</h4>
                 ):(
                     data.messages.map(m=>{
-                        return <>
+                        return <div className="shmsgs">
                             {m.sender.username === Auth.getProfile().data.username ? (<p style={{textAlign:"right"}}>{m.textValue}</p>):(<p>{m.textValue}</p>)
                             }
-                            </>
+                            </div>
                     })
                 )}
 
