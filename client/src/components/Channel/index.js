@@ -14,9 +14,13 @@ const Channel = ()=>{
     //getting the channel id using useParams hook
     const channelId = useParams()
     //getting all the channel Data using channelId
-    const {loading,error,data:data2} = useQuery(Channel_Data,{
+    const {loading,error,data:data2,refetch} = useQuery(Channel_Data,{
         variables: {_id: channelId.channelId}
     })
+    setInterval(()=>{
+        //console.log("working")
+        refetch()
+    },1000)
     const data = data2?.channel || {}
     //storing logged in user's message using useState
     const [msg,setMsg] = useState({
@@ -24,26 +28,26 @@ const Channel = ()=>{
     })
     const id = Auth.getProfile().data._id
     let socket = useSocket();
-    useEffect(()=>{
-        if(socket == null) {
-            console.log("socket null")
-            return
-        }
+    // useEffect(()=>{
+    //     if(socket == null) {
+    //         console.log("socket null")
+    //         return
+    //     }
 
-        console.log("socket full")
-        socket.on('rec',({msg})=>
-            console.log("message from server socket id: " + msg)
-        )
+    //     console.log("socket full")
+    //     socket.on('rec',({msg})=>
+    //         console.log("message from server socket id: " + msg)
+    //     )
     
-        //return ()=> socket.off('rec-msg')
-    },[socket])
+    //     //return ()=> socket.off('rec-msg')
+    // },[socket])
     //calling the SendMessage when send button clicked
     const sendMessage = async(e)=>{
         e.preventDefault()
         setMsg({...msg,text:""})
         
         
-        socket.emit("chat message",{msg,id})
+        //socket.emit("chat message",{msg,id})
 
        
         document.querySelector('#msginput').focus(); 

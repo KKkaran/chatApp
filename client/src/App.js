@@ -39,7 +39,7 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <SocketProvider id={Auth.getProfile().data._id}>
+      
       <div className="flex-column justify-flex-start min-100-vh">
         <Router>
           <Switch>
@@ -54,7 +54,7 @@ function App() {
         </Router>
 
       </div>
-      </SocketProvider>
+      
     </ApolloProvider>
   );
 }

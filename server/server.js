@@ -67,6 +67,8 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 });
+
+
 db.once('open', () => {
   server.listen(PORT, () => {
     console.log(`Socket running on server`);
